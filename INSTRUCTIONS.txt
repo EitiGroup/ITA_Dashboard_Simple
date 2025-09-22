@@ -1,0 +1,21 @@
+=====================================================
+DASHBOARD ITA - INSTRUCTIONS D'UTILISATION
+=====================================================
+
+Pour lancer le dashboard, double-cliquez simplement sur "ITA Dashboard.exe"
+
+Le dashboard s'ouvrira automatiquement dans votre navigateur par défaut.
+
+=====================================================
+NOTES IMPORTANTES
+=====================================================
+
+1. Ne fermez pas la fenêtre de console tant que vous utilisez le dashboard
+
+2. Si une alerte de sécurité Windows apparaît, cliquez sur "Informations complémentaires"
+   puis sur "Exécuter quand même"
+
+3. Si vous avez des problèmes de connexion, vérifiez que vous avez accès au
+   serveur de base de données (192.168.1.250)
+
+=====================================================

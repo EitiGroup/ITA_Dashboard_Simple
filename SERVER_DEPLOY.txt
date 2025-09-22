@@ -1,0 +1,102 @@
+=====================================================
+     DÉPLOIEMENT DU DASHBOARD ITA SUR SERVEUR
+=====================================================
+
+Ce guide explique comment configurer le dashboard ITA pour qu'il
+s'exécute en permanence sur un serveur d'entreprise et soit
+accessible à tous les utilisateurs sur le réseau.
+
+-----------------------------------------------------
+1. PRÉPARATION DU SERVEUR
+-----------------------------------------------------
+
+Vous êtes connecté sur un serveur Windows (avec PowerShell 
+en icône jaune). C'est un bon choix pour héberger le dashboard
+en continu.
+
+Emplacements recommandés pour l'installation :
+
+Option 1 (Préférée) - Dossier Partagé Z:
+- Créez un dossier Z:\Applications\ITA_Dashboard
+- Cette option permet un accès partagé et facilite les sauvegardes
+
+Option 2 - Lecteur local C:
+- Créez un dossier C:\Applications\ITA_Dashboard
+- Utilisez cette option si Z: n'est pas disponible pour tous
+
+-----------------------------------------------------
+2. INSTALLATION DU DASHBOARD
+-----------------------------------------------------
+
+1. Copiez ces fichiers dans le dossier d'installation choisi :
+   - ITA Dashboard.exe
+   - CLIENT_README.txt
+   - Le fichier service_setup.bat (créé plus bas)
+
+2. Créez un raccourci vers le dashboard sur le bureau
+
+-----------------------------------------------------
+3. CONFIGURATION EN TANT QUE SERVICE WINDOWS
+-----------------------------------------------------
+
+Pour que le dashboard s'exécute en permanence (24h/24), même
+sans utilisateur connecté, il est recommandé de le configurer
+comme un service Windows.
+
+1. Créez un fichier "service_setup.bat" avec le contenu suivant :
+
+   @echo off
+   echo Installation du service ITA Dashboard
+   echo ===================================
+   
+   REM Installer NSSM (Non-Sucking Service Manager) si nécessaire
+   if not exist nssm.exe powershell -Command "Invoke-WebRequest -Uri https://nssm.cc/release/nssm-2.24.zip -OutFile nssm.zip; Expand-Archive -Path nssm.zip -DestinationPath ."
+   
+   REM Créer le service
+   nssm\win64\nssm.exe install "ITA Dashboard" "%~dp0\ITA Dashboard.exe"
+   nssm\win64\nssm.exe set "ITA Dashboard" DisplayName "ITA Dashboard"
+   nssm\win64\nssm.exe set "ITA Dashboard" Description "Dashboard d'analyse de données ITA"
+   nssm\win64\nssm.exe set "ITA Dashboard" Start SERVICE_AUTO_START
+   
+   REM Démarrer le service
+   net start "ITA Dashboard"
+   
+   echo Service installé et démarré
+   pause
+
+2. Exécutez ce script en tant qu'administrateur
+
+-----------------------------------------------------
+4. ACCÈS AU DASHBOARD
+-----------------------------------------------------
+
+Pour accéder au dashboard depuis n'importe quel poste :
+
+1. Depuis un navigateur, accédez à :
+   http://NOM_DU_SERVEUR:8502
+   
+   Remplacez NOM_DU_SERVEUR par le nom réel de votre serveur
+   (probablement le nom du serveur TSE sur lequel vous êtes)
+   
+   Par exemple : http://SERVERTSE1:8502
+
+2. Vérifiez que le port 8502 est ouvert dans le pare-feu du serveur
+
+-----------------------------------------------------
+5. VÉRIFICATION ET MAINTENANCE
+-----------------------------------------------------
+
+Pour vérifier que le dashboard fonctionne correctement :
+
+1. Consultez les journaux Windows :
+   - Ouvrez l'Observateur d'événements
+   - Vérifiez sous "Journaux Windows" > "Application"
+
+2. Redémarrer le service en cas de problème :
+   - Ouvrez "Services" (services.msc)
+   - Localisez "ITA Dashboard"
+   - Clic droit > Redémarrer
+
+=====================================================
+       CONTACTEZ LE SUPPORT IT EN CAS DE BESOIN
+=====================================================
